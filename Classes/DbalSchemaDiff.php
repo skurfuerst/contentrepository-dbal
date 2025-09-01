@@ -39,10 +39,11 @@ final class DbalSchemaDiff
         $fromTableSchemas = [];
         foreach ($schema->getTables() as $tableSchema) {
             if ($schemaManager->tablesExist([$tableSchema->getName()])) {
-                $fromTableSchemas[] = $schemaManager->listTableDetails($tableSchema->getName());
+                $fromTableSchemas[] = $schemaManager->introspectTable($tableSchema->getName());
             }
         }
         $fromSchema = new Schema($fromTableSchemas, [], $schemaManager->createSchemaConfig());
-        return (new Comparator())->compare($fromSchema, $schema)->toSql($platform);
+        $schemaDiff = (new Comparator($connection->getDatabasePlatform()))->compareSchemas($fromSchema, $schema);
+        return $connection->getDatabasePlatform()->getAlterSchemaSQL($schemaDiff);
     }
 }
