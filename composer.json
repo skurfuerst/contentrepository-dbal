@@ -11,7 +11,7 @@
   "require": {
     "neos/contentrepository-core": "self.version",
     "neos/eventstore-doctrineadapter": "^1 || ^2",
-    "doctrine/dbal": "^3.1.4"
+    "doctrine/dbal": "^4.2.5"
   },
   "autoload": {
     "psr-4": {
